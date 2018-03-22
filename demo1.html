@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	</head>
+	
+	<body>
+
+
+  <script>
+   //必须先有回调函数
+         function getData2(res){
+
+           console.log(typeof(res)); 
+           alert(res.name)
+
+
+         }
+
+
+     var xml;
+    if(window.XMLHttpRequest){
+      
+      xml = new XMLHttpRequest();
+
+    }else{
+
+    	xml = new ActiveXObject("Microsoft.XMLHTTP");
+
+    }
+
+    xml.open("GET","http://127.0.0.1:8086?callback=getData2")
+    xml.setRequestHeader("Content-type","application/x-www-form-urlencoded;charset=utf-8");
+    xml.send();
+  
+
+  var success = {};
+
+    xml.onreadystatechange=function(){
+
+    	  if(this.readyState == 4 && this.status == 200){
+           //"getData2('你好啊')"  string
+    	  	  var result = this.responseText;
+           //转换成函数   function(){ getData2("你好啊") }
+            var f = new Function(result);
+           //调用函数 
+            f()
+    	  }
+    }
+
+   
+   </script>
+
+<!-- 第一种 -->
+<!-- <script src="http://127.0.0.1:8086?callback=getData2"></script> -->
+
+
+	</body>
+</html>
